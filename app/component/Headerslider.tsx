@@ -46,7 +46,7 @@ const HeaderSlider = () => {
   };
 
   return (
-    <div className="overflow-hidden top-12 rounded-4xl relative w-full ">
+    <div className="overflow-hidden   relative w-full ">
       <div
         className="flex transition-transform duration-700 ease-in-out "
         style={{
@@ -56,7 +56,7 @@ const HeaderSlider = () => {
         {sliderData.map((slide, index) => (
           <div
             key={slide.id}
-            className="flex flex-col-reverse md:flex-row items-center justify-between bg-black py-8 md:px-14 px-5  min-w-full text-white"
+            className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#033634] p-20 md:px-14 px-5  min-w-full text-white"
           >
             <div className="md:pl-8 mt-10 md:mt-0">
               <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
