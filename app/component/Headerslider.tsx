@@ -10,24 +10,24 @@ const HeaderSlider = () => {
       id: 1,
       title: "Premium Hotel Amenities Crafted for Exceptional Guest Comfort",
       offer: "Enhance your hospitality standards with trusted quality",
-      buttonText1: "View products",
-      buttonText2: "Explore Collection",
+      buttonText1: "Explore Collection",
+      buttonText2: "View products",
       imgSrc: assets.Banner1,
     },
     {
       id: 2,
       title: "Luxury Toiletries Designed for Modern Hospitality Businesses",
       offer: "Bulk pricing available for hotels, resorts, and apartments",
-      buttonText1: "View Products",
-      buttonText2: "Get Deals",
+      buttonText1: "Get Deals",
+      buttonText2: "View Products",
       imgSrc: assets.Banner2,
     },
     {
       id: 3,
       title: "Reliable, Elegant & Affordable Hotel Essentials in One Place",
       offer: "Fast delivery and consistent supply you can depend on",
-      buttonText1: "View products",
-      buttonText2: "Order Today",
+      buttonText1: "Order Today",
+      buttonText2: "View products",
       imgSrc: assets.Banner3,
     },
   ];
@@ -46,52 +46,229 @@ const HeaderSlider = () => {
   };
 
   return (
-    <div className="overflow-hidden   relative w-full ">
-      <div
-        className="flex transition-transform duration-700 ease-in-out "
-        style={{
-          transform: `translateX(-${currentSlide * 100}%)`,
-        }}
-      >
-        {sliderData.map((slide, index) => (
+  <div className="relative w-full overflow-hidden bg-black">
+
+    {/* SLIDER */}
+    <div
+      className="flex transition-transform duration-500 ease-out"
+      style={{
+        transform: `translateX(-${currentSlide * 100}%)`,
+      }}
+    >
+      {sliderData.map((slide, index) => (
+        <div
+          key={slide.id}
+          className="
+            relative
+            min-w-full
+            overflow-hidden
+            bg-gradient-to-br
+            from-black
+            via-[#111111]
+            to-orange-600
+            px-5
+            py-10
+            text-white
+            sm:px-8
+            md:px-14
+            md:py-14
+            lg:px-20
+            lg:py-16
+          "
+        >
+
+          {/* SIMPLE ORANGE ACCENT */}
           <div
-            key={slide.id}
-            className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#033634] p-20 md:px-14 px-5  min-w-full text-white"
+            className="
+              absolute
+              -right-20
+              -top-20
+              h-64
+              w-64
+              rounded-full
+              bg-orange-500/10
+            "
+          />
+
+          {/* CONTENT */}
+          <div
+            className="
+              relative
+              z-10
+              mx-auto
+              flex
+              max-w-7xl
+              flex-col-reverse
+              items-center
+              justify-between
+              gap-10
+              md:flex-row
+            "
           >
-            <div className="md:pl-8 mt-10 md:mt-0">
-              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
+
+            {/* TEXT */}
+            <div
+              className="
+                w-full
+                max-w-xl
+                text-center
+                md:text-left
+              "
+            >
+
+              <p
+                className="
+                  mb-3
+                  text-sm
+                  font-semibold
+                  uppercase
+                  tracking-[0.2em]
+                  text-orange-400
+                "
+              >
+                New Collection
+              </p>
+
+              <h1
+                className="
+                  text-3xl
+                  font-bold
+                  leading-tight
+                  tracking-tight
+                  sm:text-4xl
+                  md:text-5xl
+                  md:leading-tight
+                "
+              >
                 {slide.title}
               </h1>
-              <div className="flex items-center mt-4 md:mt-6 ">
-                <button className="md:px-10 px-7 md:py-2.5 py-2 bg-[#c91313] rounded-full text-white font-medium">
+
+              <div className="mt-6 md:mt-8">
+
+                <button
+                  className="
+                    rounded-full
+                    bg-orange-500
+                    px-7
+                    py-3
+                    text-sm
+                    font-semibold
+                    text-white
+                    shadow-md
+                    shadow-orange-500/20
+                    transition
+                    duration-200
+                    hover:bg-orange-400
+                    active:scale-95
+                    md:px-9
+                    md:py-3.5
+                  "
+                >
                   {slide.buttonText1}
                 </button>
-              </div>
-            </div>
-            <div className="flex items-center flex-1 justify-center">
-              <Image
-                className="md:w-72 w-48 rounded-3xl"
-                src={slide.imgSrc}
-                alt={`Slide ${index + 1}`}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
 
-      <div className="flex items-center justify-center gap-2 mt-8">
-        {sliderData.map((_, index) => (
-          <div
-            key={index}
-            onClick={() => handleSlideChange(index)}
-            className={`h-2 w-2 rounded-full cursor-pointer ${
-              currentSlide === index ? "bg-[#043033]" : "bg-gray-500/30"
-            }`}
-          ></div>
-        ))}
-      </div>
+              </div>
+
+            </div>
+
+
+            {/* IMAGE */}
+            <div
+              className="
+                relative
+                flex
+                w-full
+                flex-1
+                items-center
+                justify-center
+              "
+            >
+
+              <div
+                className="
+                  relative
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
+
+                {/* Small orange accent behind image */}
+                <div
+                  className="
+                    absolute
+                    h-40
+                    w-40
+                    rounded-full
+                    bg-orange-500/10
+                    sm:h-52
+                    sm:w-52
+                  "
+                />
+
+                <Image
+                  src={slide.imgSrc}
+                  alt={`Slide ${index + 1}`}
+                  width={500}
+                  height={500}
+                  priority={index === 0}
+                  className="
+                    relative
+                    z-10
+                    w-48
+                    rounded-2xl
+                    object-contain
+                    sm:w-60
+                    md:w-72
+                    lg:w-80
+                  "
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      ))}
     </div>
-  );
+
+
+    {/* DOT INDICATORS */}
+    <div
+      className="
+        flex
+        items-center
+        justify-center
+        gap-2
+        bg-black
+        py-4
+      "
+    >
+      {sliderData.map((_, index) => (
+        <button
+          key={index}
+          type="button"
+          aria-label={`Go to slide ${index + 1}`}
+          onClick={() => handleSlideChange(index)}
+          className={`
+            h-2
+            rounded-full
+            transition-all
+            duration-300
+            ${
+              currentSlide === index
+                ? "w-7 bg-orange-500"
+                : "w-2 bg-white/30 hover:bg-white/60"
+            }
+          `}
+        />
+      ))}
+    </div>
+
+  </div>
+);
 };
 
 export default HeaderSlider;
