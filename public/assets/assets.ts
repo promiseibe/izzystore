@@ -18,6 +18,11 @@ import email_icon from "./email-icon.png";
 import my_location_image from "./my_location_image.svg";
 import towel from "./izzybanner.jpg";
 import logo from "./izzyproperty.png";
+import bathroom from "./bathroom.png";
+import bedroom from "./bedroom.jpg";
+import hotel from "./hotel.jpg";
+import home from "./home.jpg"
+
 export const assets = {
  Banner1,
  Banner2,
@@ -38,5 +43,9 @@ export const assets = {
  email_icon,
  my_location_image,
  towel,
- logo
+ logo,
+ bathroom,
+ bedroom,
+ hotel,
+ home
 };

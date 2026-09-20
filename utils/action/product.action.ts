@@ -3,11 +3,10 @@ import { ProductParams } from "@/shared.types";
 import { createClientServer } from "../supabase/server";
 import { redirect } from "next/navigation";
 
-
-
 export async function fetchProducts(): Promise<ProductParams[]> {
   const supabase = await createClientServer();
 
+ 
   const { data: products, error } = await supabase
     .from("products")
     .select("*")
@@ -21,22 +20,34 @@ export async function fetchProducts(): Promise<ProductParams[]> {
 
   return products;
 }
-
-export async function fetchProductsAll(): Promise<ProductParams[]> {
+export async function fetchProductsAll(search?: string): Promise<ProductParams[]> {
   const supabase = await createClientServer();
-  const { data: products, error } = await supabase.from("products").select("*");
+
+  let query = supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (search && search.trim()) {
+    query = query.ilike(
+      "name",
+      `%${search.trim()}%`
+    );
+  }
+
+  const { data: products, error } = await query;
 
   if (error) {
-    console.log(error);
+    console.error("Error fetching products:", error);
     return [];
   }
 
-  return products;
+  return products ?? [];
 }
-
 export async function fetchProductById(id: string) {
   const supabase = await createClientServer();
-  try {
+  
+ 
     const { data: product, error } = await supabase
       .from("products")
       .select("*,category:categories!fk_category(name)")
@@ -49,14 +60,11 @@ export async function fetchProductById(id: string) {
     }
 
     return product;
-  } catch (error) {
-    console.log(error);
-    return null;
   }
-}
 
-export const GetProductCount = async() => {
- const supabase = await createClientServer();
+
+export const GetProductCount = async () => {
+  const supabase = await createClientServer();
 
   const {
     data: { user },
@@ -76,34 +84,27 @@ export const GetProductCount = async() => {
     redirect("/");
   }
 
-  const { count: productCount } = await supabase
-    .from("products")
-    .select("*", {
-      count: "exact",
-      head: true,
-    });
+  const { count: productCount } = await supabase.from("products").select("*", {
+    count: "exact",
+    head: true,
+  });
 
-    return productCount
-}
-
+  return productCount;
+};
 
 export async function getProductById(id: string) {
   const supabase = await createClientServer();
 
-  const {
-    data: product,
-    error,
-  } = await supabase
+
+
+  const { data: product, error } = await supabase
     .from("products")
     .select("*")
     .eq("id", id)
     .single();
 
   if (error) {
-    console.error(
-      "GET PRODUCT ERROR:",
-      error
-    );
+    console.error("GET PRODUCT ERROR:", error);
 
     return null;
   }

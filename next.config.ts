@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
       protocol: "https",
       hostname: "fkkchlcooaczsgpcxpfl.supabase.co",
     },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
   ],
 },
   // images: {

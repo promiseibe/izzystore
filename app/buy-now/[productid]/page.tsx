@@ -1,5 +1,4 @@
 import BuyNow from '@/app/component/BuyNowPage';
-import { ProductParams } from '@/shared.types';
 import { fetchAddresses } from '@/utils/action/address.action';
 import { fetchProductById } from '@/utils/action/product.action';
 

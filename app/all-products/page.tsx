@@ -1,10 +1,20 @@
-import React from 'react'
-import AllProducts from '../component/AllProducts'
-import { fetchProductsAll } from '@/utils/action/product.action'
+import { fetchProductsAll } from "@/utils/action/product.action";
+import AllProducts from "../component/AllProducts";
 
-const allProducts = async() => {
-    const products = await fetchProductsAll()
-  return <AllProducts products={products}/>
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    search?: string;
+  }>;
+}) {
+  const params = await searchParams;
+
+  const search = params.search || "";
+
+  const products = await fetchProductsAll(search);
+
+  return (
+    <AllProducts products={products} />
+  );
 }
-
-export default allProducts

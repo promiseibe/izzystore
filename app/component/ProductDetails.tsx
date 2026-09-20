@@ -392,7 +392,7 @@ Please I would like to know more about it.`;
 
 
               {/* Buy now */}
-              <Link
+               <Link
                 href={`/buy-now/${product.id}`}
                 className="
                   flex
@@ -416,11 +416,11 @@ Please I would like to know more about it.`;
                 "
               >
                 Buy Now
-              </Link>
+              </Link> 
 
 
               {/* WhatsApp */}
-              <button
+              {/* <button
                 type="button"
                 onClick={handleWhatsApp}
                 className="
@@ -453,8 +453,8 @@ Please I would like to know more about it.`;
                   className="h-5 w-5 object-contain"
                 />
 
-                <span>WhatsApp</span>
-              </button>
+                <span>Buy Now</span>
+              </button> */}
 
             </div>
 
@@ -472,7 +472,7 @@ Please I would like to know more about it.`;
               sm:justify-start
             ">
               <span className="h-2 w-2 rounded-full bg-green-500" />
-              you can also proceed with payment on whatsApp? Contact us on WhatsApp.
+              To build trust you can chat with us and proceed with payment on WhatsApp?
             </div>
 
           </div>

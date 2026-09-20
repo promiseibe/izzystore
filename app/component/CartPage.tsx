@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAppContext } from "../context/AppContext";
 import { cartStore } from "../store/cart-store";
+import Link from "next/link";
 
 const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
   const router = useRouter();
@@ -41,43 +42,93 @@ const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
       setSelectedAddress(defaultAddress);
     }
   }, [items, addresses]);
+// whatsapp payment
+// Handle WhatsApp order
+const handleWhatsAppOrder = () => {
+  if (!selectedAddress || !items || items.length === 0) return;
 
-  const payNow = async () => {
-    try {
-      const result = await fetch("/api/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: session?.user?.email,
-          amount: totalCost * 100 + deducedShippingFee * 100,
-          source: "cart",
-        }),
-      });
+  const companyWhatsApp = "09029129268";
 
-      const paystackResult = await result.json();
+  const orderItems = items
+    .map((eachItem, index) => {
+      const subtotal = eachItem.price * eachItem.quantity;
 
-      if (result.status) {
-        localStorage.setItem(
-          "paymentInformation",
-          JSON.stringify({
-            userId: session?.user?.id,
-            userEmail: session?.user?.email,
-            fullAddressFields: selectedAddress,
-            items: items,
-            amount: totalCost * 100 + deducedShippingFee * 100,
-          })
-        );
-        router.push(paystackResult.data.authorization_url);
-      }
-    } catch (error) {
-      console.log("Payment Error:", error);
-      toast.error("Payment failed. Please try again.");
-    } finally {
-      console.log("Payment Processed");
-    }
-  };
+      return `
+${index + 1}. *${eachItem.name}*
+Quantity: ${eachItem.quantity}
+Price: ${process.env.NEXT_PUBLIC_CURRENCY}${eachItem.price}
+Subtotal: ${process.env.NEXT_PUBLIC_CURRENCY}${subtotal.toFixed(2)}
+`;
+    })
+    .join("\n");
+
+  const orderMessage = `
+🛒 *NEW ORDER*
+
+*PRODUCTS*
+${orderItems}
+
+🚚 *Shipping Fee:* ${
+    process.env.NEXT_PUBLIC_CURRENCY
+  }${deducedShippingFee}
+
+💰 *TOTAL:* ${
+    process.env.NEXT_PUBLIC_CURRENCY
+  }${totalCost}
+
+📍 *DELIVERY ADDRESS*
+${selectedAddress.address}
+${selectedAddress.city}, ${selectedAddress.state}
+
+Please confirm my order. Thank you!
+`;
+
+  const whatsappUrl = `https://wa.me/${companyWhatsApp}?text=${encodeURIComponent(
+    orderMessage
+  )}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+  // const payNow = async () => {
+
+  //   try {
+  //     const result = await fetch("/api/payment", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email: session?.user?.email,
+  //         amount: totalCost * 100 + deducedShippingFee * 100,
+  //         source: "cart",
+  //       }),
+  //     });
+
+  //     const paystackResult = await result.json();
+
+  //     if (result.status) {
+  //       localStorage.setItem(
+  //         "paymentInformation",
+  //         JSON.stringify({
+  //           userId: session?.user?.id,
+  //           userEmail: session?.user?.email,
+  //           fullAddressFields: selectedAddress,
+  //           items: items,
+  //           amount: totalCost * 100 + deducedShippingFee * 100,
+  //         })
+  //       );
+  //       router.push(paystackResult.data.authorization_url);
+  //     }
+  //   } catch (error) {
+  //     console.log("Payment Error:", error);
+  //     toast.error("Payment failed. Please try again.");
+  //   } finally {
+  //     console.log("Payment Processed");
+  //   }
+  // };
+  
+// 
+
   return (
     <>
       
@@ -145,19 +196,16 @@ const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
                         <div className="absolute inset-0 ring-1 ring-inset ring-orange-200/40 rounded-xl pointer-events-none" />
                       </div>
 
-                      <button className="md:hidden text-xs text-orange-500 bg-black rounded-full py-1 px-3 mt-2 hover:bg-orange-500 hover:text-white transition-all duration-300">
+                      {/* <button className="md:hidden text-xs text-orange-500 bg-black rounded-full py-1 px-3 mt-2 hover:bg-orange-500 hover:text-white transition-all duration-300">
                         Remove
-                      </button>
+                      </button> */}
                     </div>
 
                     <div className="text-sm hidden md:block">
                       <p className="text-gray-800 font-medium max-w-[220px] truncate">
                         {eachItem.name}
                       </p>
-
-                      <button className="text-xs text-orange-500 mt-2 bg-black rounded-full py-1 px-3 hover:bg-orange-500 hover:text-white transition-all duration-300">
-                        Remove
-                      </button>
+{/*  */}
                     </div>
                   </td>
 
@@ -211,7 +259,7 @@ const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
     </div>
 
     {/* Continue Shopping */}
-    <button className="group flex items-center mt-6 gap-2 text-orange-500 bg-black rounded-full py-2.5 px-5 hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg active:scale-95">
+    <Link href="/all-products" className="group flex items-center mt-6 gap-2 text-orange-500 bg-black rounded-full py-2.5 px-5 hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg active:scale-95">
       <Image
         className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300"
         src={assets.arrow_right_icon_colored}
@@ -221,7 +269,7 @@ const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
       <span className="text-sm font-medium">
         Continue Shopping
       </span>
-    </button>
+    </Link>
   </div>
 
   {/* ================= ORDER SUMMARY ================= */}
@@ -283,11 +331,15 @@ const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
               <ul className="absolute w-full bg-white border border-gray-200 rounded-xl shadow-xl mt-2 z-20 py-1.5 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                 {userAddresses?.map((address, index) => (
                   <li
-                    key={index}
-                    className="px-4 py-3 hover:bg-orange-50 hover:text-orange-500 cursor-pointer transition-colors duration-200"
-                  >
-                    {address.address}, {address.city}, {address.state}
-                  </li>
+  key={index}
+  onClick={() => {
+    setSelectedAddress(address);
+    setIsDropdownOpen(false);
+  }}
+  className="px-4 py-3 hover:bg-orange-50 hover:text-orange-500 cursor-pointer transition-colors duration-200"
+>
+  {address.address}, {address.city}, {address.state}
+</li>
                 ))}
 
                 <li
@@ -329,59 +381,34 @@ const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
 
             <p className="text-orange-500">
               {process.env.NEXT_PUBLIC_CURRENCY}
-              {totalCost}
+              {totalCost + deducedShippingFee}
             </p>
           </div>
         </div>
       </div>
 
       {/* ================= PAYMENT BUTTON ================= */}
-      {selectedAddress ? (
-        <button
-          onClick={async () => {
-            setIsPaying(true);
+    {selectedAddress ? (
+  <button
+    onClick={handleWhatsAppOrder}
+    className="group relative overflow-hidden flex items-center justify-center gap-3 w-full mt-6 py-3.5 px-5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg shadow-green-500/20 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+  >
+    <span className="relative">
+      Order via WhatsApp
+    </span>
 
-            try {
-              await payNow();
-            } finally {
-              setIsPaying(false);
-            }
-          }}
-          disabled={isPaying}
-          className={`group relative overflow-hidden flex items-center justify-center gap-3 w-full mt-6 py-3.5 px-5 rounded-xl text-white font-semibold shadow-lg shadow-orange-500/20 transition-all duration-300 ${
-            isPaying
-              ? "bg-orange-400 cursor-not-allowed"
-              : "bg-orange-500 hover:bg-orange-600 hover:shadow-xl hover:shadow-orange-500/30 hover:-translate-y-0.5 active:scale-[0.98]"
-          }`}
-        >
-          {/* Shine effect */}
-          {!isPaying && (
-            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700" />
-          )}
-
-          {isPaying ? (
-            <>
-              {/* Rotating Loader */}
-              <span className="relative w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-
-              <span className="relative">
-                Processing Payment...
-              </span>
-            </>
-          ) : (
-            <span className="relative">
-              Pay Now
-            </span>
-          )}
-        </button>
-      ) : (
-        <button
-          disabled
-          className="w-full text-gray-400 bg-gray-100 rounded-xl py-3.5 mt-6 text-sm cursor-not-allowed"
-        >
-          Please Select An Address To Continue
-        </button>
-      )}
+    <span className="relative transition-transform duration-300 group-hover:translate-x-1">
+      →
+    </span>
+  </button>
+) : (
+  <button
+    disabled
+    className="w-full text-gray-400 bg-gray-100 rounded-xl py-3.5 mt-6 text-sm cursor-not-allowed"
+  >
+    Please Select An Address To Continue
+  </button>
+)}
 
       {/* Secure Payment Note */}
       {selectedAddress && !isPaying && (

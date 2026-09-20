@@ -92,15 +92,7 @@ const router = useRouter();
         </div>
       </div>
 
-      {/* Button */}
-      <button
-        className="w-full mt-8 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all duration-300 text-white font-medium py-3 rounded-lg shadow-lg shadow-orange-500/30"
-      >
-        {/* Spinner (hidden by default, show when loading state is true) */}
-        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin hidden"></span>
-
-        <span>Save Address</span>
-      </button>
+  
 
     </div>
   </div>
