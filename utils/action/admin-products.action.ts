@@ -3,13 +3,14 @@
 import { createClientServer } from "@/utils/supabase/server";
 import { requireAdmin } from "../auth/admin";
 import { revalidatePath } from "next/cache";
-import { ProductParams } from "@/shared.types";
-
-
+import {
+  ProductParams,
+  CreateProductParams,
+} from "@/shared.types";
 
 // Create Product
 export async function createProduct(
-  product: ProductParams
+  product: CreateProductParams
 ) {
   try {
     const supabase = await createClientServer();
@@ -135,7 +136,7 @@ export async function createProduct(
     stles: product.stles,
     image_url_array: product.image_url_array,
     video_url_array:
-      product.videos_url_array ?? [],
+      product.video_url_array ?? [],
   })
   .select()
   .single();

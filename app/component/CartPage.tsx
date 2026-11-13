@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import toast from "react-hot-toast";
 import { useAppContext } from "../context/AppContext";
 import { cartStore } from "../store/cart-store";
 import Link from "next/link";
@@ -30,7 +29,7 @@ const CartPage = ({ addresses }: { addresses: AddressParams[] }) => {
 
     setDeducedShippingFee(
       items.reduce((total, item) => {
-        return total + item.product_shipping_fee * item.quantity;
+return total + (item.product_shipping_fee ?? 0) * item.quantity;
       }, 0)
     );
 

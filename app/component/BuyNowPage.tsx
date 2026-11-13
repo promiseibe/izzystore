@@ -16,16 +16,15 @@ const BuyNow = ({
   product: ProductParams;
   addresses: AddressParams[];
 }) => {
-  const { session } = useAppContext();
+  // const { session } = useAppContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const router = useRouter();
   const [userAddresses, setUserAddresses] = useState<AddressParams[]>();
   const [quantity, setQuantity] = useState(1);
   const [totalCost, setTotalCost] = useState(product.price);
   const [selectedAddress, setSelectedAddress] = useState<AddressParams | null>(
     null,
   );
-  const [paying, setPaying] = useState(false);
+  // const [paying, setPaying] = useState(false);
 
   const increaseQTY = () => {
     setQuantity((prev) => prev + 1);
@@ -56,54 +55,57 @@ const BuyNow = ({
   };
 
   // handling payment using paystack
-  const payNow = async () => {
-    try {
-      const result = await fetch("/api/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: session?.user?.email,
-          amount: totalCost * 100 + product.product_shipping_fee * 100,
-          source: "buy-now",
-        }),
-      });
+//   const payNow = async () => {
+//     try {
+//       const result = await fetch("/api/payment", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           email: session?.user?.email,
+// amount:
+//   totalCost * 100 +
+//   (product.product_shipping_fee ?? 0) * 100,          source: "buy-now",
+//         }),
+//       });
 
-      const paystackResult = await result.json();
+//       const paystackResult = await result.json();
 
-      if (result.status) {
-        localStorage.setItem(
-          "paymentInformation",
-          JSON.stringify({
-            userId: session?.user?.id,
-            productName: product.name,
-            productCategory: product.category.name,
-            quantity: quantity,
-            image: product.image_url_array[0],
-            amount: totalCost + product.product_shipping_fee,
-            userEmail: session?.user?.email,
-            fullAddressFields: selectedAddress,
-          }),
-        );
-        router.push(paystackResult.data.authorization_url);
-      }
-    } catch (error) {
-      console.log("Payment Error:", error);
-      toast.error("Payment failed. Please try again.");
-    } finally {
-      console.log("Payment Processed");
-    }
-  };
+//       if (result.status) {
+//         localStorage.setItem(
+//           "paymentInformation",
+//           JSON.stringify({
+//             userId: session?.user?.id,
+//             productName: product.name,
+//             productCategory: product.category.name,
+//             quantity: quantity,
+//             image: product.image_url_array[0],
+//             amount: totalCost + product.product_shipping_fee,
+//             userEmail: session?.user?.email,
+//             fullAddressFields: selectedAddress,
+//           }),
+//         );
+//         router.push(paystackResult.data.authorization_url);
+//       }
+//     } catch (error) {
+//       console.log("Payment Error:", error);
+//       toast.error("Payment failed. Please try again.");
+//     } finally {
+//       console.log("Payment Processed");
+//     }
+//   };
 
  
   // handle whatsapp order
-  const handleWhatsAppOrder = () => {
-    if (!selectedAddress || !product) return;
+ const handleWhatsAppOrder = () => {
+  if (!selectedAddress || !product) return;
 
-    const companyWhatsApp = "09029129268"; // Company's WhatsApp number
+  const companyWhatsApp = "09029129268"; // Company's WhatsApp number
 
-    const orderMessage = `
+  const shippingFee = product.product_shipping_fee ?? 0;
+
+  const orderMessage = `
 🛒 *NEW ORDER*
 
 *Product:* ${product.name}
@@ -111,9 +113,9 @@ const BuyNow = ({
 *Price:* ${process.env.NEXT_PUBLIC_CURRENCY}${product.price}
 *Size:* ${product.sizes || "N/A"}
 
-*Shipping Fee:* ${process.env.NEXT_PUBLIC_CURRENCY}${product.product_shipping_fee}
+*Shipping Fee:* ${process.env.NEXT_PUBLIC_CURRENCY}${shippingFee}
 
-*TOTAL:* ${process.env.NEXT_PUBLIC_CURRENCY}${totalCost + product.product_shipping_fee}
+*TOTAL:* ${process.env.NEXT_PUBLIC_CURRENCY}${totalCost + shippingFee}
 
 📍 *DELIVERY ADDRESS*
 ${selectedAddress.address}
@@ -122,12 +124,12 @@ ${selectedAddress.city}, ${selectedAddress.state}
 Please confirm my order. Thank you!
 `;
 
-    const whatsappUrl = `https://wa.me/${companyWhatsApp}?text=${encodeURIComponent(
-      orderMessage,
-    )}`;
+  const whatsappUrl = `https://wa.me/${companyWhatsApp}?text=${encodeURIComponent(
+    orderMessage,
+  )}`;
 
-    window.open(whatsappUrl, "_blank");
-  };
+  window.open(whatsappUrl, "_blank");
+};
   return (
     <div
       className={`min-h-screen flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-6 sm:pt-10 pb-20 bg-gray-50`}
@@ -355,25 +357,25 @@ Please confirm my order. Thank you!
             <hr className="border-gray-200 my-6" />
 
             {/* PRICING */}
-            <div className="space-y-4">
-              <div className="flex justify-between text-sm">
-                <p className="text-gray-500">Shipping Fee</p>
+           <div className="space-y-4">
+  <div className="flex justify-between text-sm">
+    <p className="text-gray-500">Shipping Fee</p>
 
-                <p className="font-semibold text-gray-800">
-                  {process.env.NEXT_PUBLIC_CURRENCY}
-                  {product.product_shipping_fee}
-                </p>
-              </div>
+    <p className="font-semibold text-gray-800">
+      {process.env.NEXT_PUBLIC_CURRENCY}
+      {product.product_shipping_fee ?? 0}
+    </p>
+  </div>
 
-              <div className="flex justify-between items-center text-lg sm:text-xl font-bold border-t border-gray-200 pt-4">
-                <p className="text-gray-800">Total</p>
+  <div className="flex justify-between items-center text-lg sm:text-xl font-bold border-t border-gray-200 pt-4">
+    <p className="text-gray-800">Total</p>
 
-                <p className="text-orange-500">
-                  {process.env.NEXT_PUBLIC_CURRENCY}
-                  {totalCost + product.product_shipping_fee}
-                </p>
-              </div>
-            </div>
+    <p className="text-orange-500">
+      {process.env.NEXT_PUBLIC_CURRENCY}
+      {totalCost + (product.product_shipping_fee ?? 0)}
+    </p>
+  </div>
+</div>
           </div>
         </div>
 

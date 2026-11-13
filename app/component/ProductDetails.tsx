@@ -61,7 +61,7 @@ Please I would like to know more about it.`;
                 priority
                 className="
                   h-auto
-                  max-h-[650px]
+                  max-h-162.5
                   w-full
                   object-contain
                   bg-gray-50
@@ -325,7 +325,7 @@ Please I would like to know more about it.`;
                       key={index}
                       type="button"
                       className="
-                        min-w-[48px]
+                        min-w-12
                         rounded-xl
                         border
                         border-gray-200
@@ -367,7 +367,7 @@ Please I would like to know more about it.`;
                 onClick={handleAddToCart}
                 className="
                   flex
-                  min-h-[52px]
+                  min-h-13
                   items-center
                   justify-center
                   rounded-xl
@@ -390,13 +390,12 @@ Please I would like to know more about it.`;
                 Add to Cart
               </button>
 
-
               {/* Buy now */}
-               <Link
+               {/* <Link
                 href={`/buy-now/${product.id}`}
                 className="
                   flex
-                  min-h-[52px]
+                  min-h-13
                   items-center
                   justify-center
                   rounded-xl
@@ -416,16 +415,16 @@ Please I would like to know more about it.`;
                 "
               >
                 Buy Now
-              </Link> 
+              </Link>  */}
 
 
               {/* WhatsApp */}
-              {/* <button
+              <button
                 type="button"
                 onClick={handleWhatsApp}
                 className="
                   flex
-                  min-h-[52px]
+                  min-h-13
                   items-center
                   justify-center
                   gap-2
@@ -454,7 +453,7 @@ Please I would like to know more about it.`;
                 />
 
                 <span>Buy Now</span>
-              </button> */}
+              </button>
 
             </div>
 

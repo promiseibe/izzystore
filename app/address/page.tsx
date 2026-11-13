@@ -40,12 +40,12 @@ const AddressPage = async () => {
           </span>
         </p>
 
-        <div className="w-20 sm:w-28 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mt-3 rounded-full shadow-md animate-pulse"></div>
+        <div className="w-20 sm:w-28 h-1 bg-linear-to-r from-orange-400 to-orange-600 mt-3 rounded-full shadow-md animate-pulse"></div>
       </div>
     </div>
 
     {/* Address Container */}
-    <div className="bg-gradient-to-br from-[#043033] via-[#065f63] to-[#022224] 
+    <div className="bg-linear-to-br from-[#043033] via-[#065f63] to-[#022224] 
                     flex flex-col md:flex-row flex-wrap 
                     items-stretch justify-center gap-6 
                     px-4 sm:px-6 md:px-10 py-8 

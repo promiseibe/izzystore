@@ -33,7 +33,7 @@ return (
             sm:text-3xl
             lg:text-4xl
           ">
-            All Products
+            Our Latest Product
           </h1>
 
           <p className="

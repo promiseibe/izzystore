@@ -39,7 +39,7 @@ const EditProductForm = ({
   );
 
   const [category, setCategory] = useState(
-    product.category?.id || ""
+    product.category || ""
   );
 
   const [location, setLocation] = useState(

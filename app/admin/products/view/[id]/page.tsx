@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { fetchProductById } from "@/utils/action/product.action";
 import DeleteProductButton from "@/app/component/admin/DeleteProductButton";
 const ViewProductPage = async ({

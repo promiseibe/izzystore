@@ -456,13 +456,8 @@ const handleCreateProduct = async () => {
 
       colors,
 
-      styles,
-
-      /*
-       * URLs generated from
-       * Supabase Storage.
-       */
-      image_url_array: imageUrls,
+      stles: styles,
+     image_url_array: imageUrls,
 
       video_url_array: [],
     });

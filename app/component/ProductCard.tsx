@@ -39,7 +39,7 @@ const ProductCard = ({ product }: { product: ProductParams }) => {
       "
     >
       {/* Discount badge */}
-      {product.discount > 0 && (
+     {(product.discount ?? 0) > 0 && (
         <span
           className="
             absolute
@@ -141,7 +141,7 @@ const ProductCard = ({ product }: { product: ProductParams }) => {
           text-orange-500
         "
       >
-        {product.category?.name || "Product"}
+{product.category || "Product"}
       </p>
 
 
